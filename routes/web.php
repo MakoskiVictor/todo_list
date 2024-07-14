@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function () {
+//     return view('app');
+// });
+// Route::get('/todos', function () {
+//     return 'Hola a todos desde esta ruta';
+// });
 Route::get('/', function () {
-    return view('welcome');
+    return view('todos/index');
 });
