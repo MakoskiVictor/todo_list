@@ -21,8 +21,16 @@ use Illuminate\Support\Facades\Route;
 //     return 'Hola a todos desde esta ruta';
 // });
 Route::get('/', function () {
-    return view('todos.index');
+    return redirect()->route('todos.index');
 })->name('home');
 //Route::get('/todos', [TodosController::class, 'index'])->name('todos.index'); // Para mostrar todos los ToDos
 
+Route::get('/tareas', [TodosController::class, 'index'])->name('todos.index');
+
 Route::post('/agregar', [TodosController::class, 'store'])->name('agregar'); // Toma más relevancia al name que a la route para llamar a la fn
+
+Route::patch('/tareas-mostrar', [TodosController::class, 'index'])->name('todos-show');
+
+Route::patch('/tareas-editar', [TodosController::class, 'index'])->name('todos-update');
+
+Route::delete('/tareas-borrar', [TodosController::class, 'index'])->name('todos-destroy');
