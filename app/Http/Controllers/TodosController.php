@@ -36,4 +36,14 @@ class TodosController extends Controller
         // Redirigir una vez concluido el trámite con éxito
         return redirect()->route('home')->with('success', '¡Tarea creada exitosamente!');
     }
+
+    public function index() {
+        $sql = "SELECT * FROM todos";
+
+        $todos = DB::select($sql);
+
+
+        return view('todos.index', ['todos' => $todos]);
+
+    }
 }
