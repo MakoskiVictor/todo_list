@@ -46,15 +46,17 @@ class CategoriesController extends Controller
             'color' => 'required|max:7'
         ]);
 
-        $sql = "INSERT INTO categories ( id, name, color ) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO categories ( id, name, color, created_at, updated_at ) VALUES (?, ?, ?, ?, ?)";
 
         $uuid = Uuid::uuid4()->toString();
         $name = $request->input('name');
         $color = $request->input('color');
+        $created_at = now();
+        $updated_at = now();
 
-        DB::insert($sql, [$uuid, $name, $color]);
+        DB::insert($sql, [$uuid, $name, $color, $created_at, $updated_at]);
 
-        return redirect()->route('categories.indes')->with('success', '¡Categoría creada!');
+        return redirect()->route('categories.index')->with('success', '¡Categoría creada!');
 
 
     }
@@ -99,14 +101,15 @@ class CategoriesController extends Controller
             'color' => 'required|max:7'
         ]);
 
-        $sql = "UPDATE categories ( name, color ) VALUES (?, ?) WHERE id = ?";
+        $sql = "UPDATE categories ( name, color, updated_at ) VALUES (?, ?, ?) WHERE id = ?";
 
         $name = $request->input('name');
         $color = $request->input('color');
+        $updated_at = now();
 
-        DB::insert($sql, [$name, $color, $id]);
+        DB::insert($sql, [$name, $color, $updated_at, $id]);
 
-        return redirect()->route('categories.indes')->with('success', '¡Categoría actualizada!');
+        return redirect()->route('categories.index')->with('success', '¡Categoría actualizada!');
     }
 
     /**
@@ -121,7 +124,7 @@ class CategoriesController extends Controller
 
         DB::delete($sql, [$id]);
 
-        return redirect()->route('categories.indes')->with('success', '¡Categoría borrada!');
+        return redirect()->route('categories.index')->with('success', '¡Categoría borrada!');
 
     }
 }
