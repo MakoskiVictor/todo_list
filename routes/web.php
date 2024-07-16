@@ -29,8 +29,8 @@ Route::get('/tareas', [TodosController::class, 'index'])->name('todos.index');
 
 Route::post('/agregar', [TodosController::class, 'store'])->name('agregar'); // Toma más relevancia al name que a la route para llamar a la fn
 
-Route::patch('/tareas-mostrar', [TodosController::class, 'index'])->name('todos-show');
+Route::get('/tareas-mostrar/{id}', [TodosController::class, 'show'])->name('todos-update');
 
-Route::patch('/tareas-editar', [TodosController::class, 'index'])->name('todos-update');
+Route::patch('/tareas-editar/{id}', [TodosController::class, 'update'])->name('todos-patch');
 
-Route::delete('/tareas-borrar', [TodosController::class, 'index'])->name('todos-destroy');
+Route::delete('/tareas-borrar/{id}', [TodosController::class, 'destroy'])->name('todos-destroy');
