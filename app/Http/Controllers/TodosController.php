@@ -25,13 +25,13 @@ class TodosController extends Controller
 
         // Construyo la query sql
         $title = $request->input('title');
-        // $createdAt = now();
-        // $updatedAt = now();
-        // $sql = "INSERT INTO todos (title, createdAt, updatedAt) VALUES (?, ?, ?)";
-        $sql = "INSERT INTO todos (title) VALUES (?)";
+        $created_at = now();
+        $updated_at = now();
+        $sql = "INSERT INTO todos (title, created_at, updated_at) VALUES (?, ?, ?)";
+        // $sql = "INSERT INTO todos (title) VALUES (?)";
 
         // Ejecutar la consulta sql
-        DB::insert($sql, [$title]);
+        DB::insert($sql, [$title, $created_at, $updated_at]);
 
         // Redirigir una vez concluido el trámite con éxito
         return redirect()->route('home')->with('success', '¡Tarea creada exitosamente!');
