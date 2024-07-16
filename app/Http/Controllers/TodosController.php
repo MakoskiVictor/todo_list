@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Todo;
+use Symfony\Component\Console\Input\Input;
 
 class TodosController extends Controller
 {
@@ -45,5 +46,40 @@ class TodosController extends Controller
 
         return view('todos.index', ['todos' => $todos]);
 
+    }
+
+    public function show ($id) {
+        $sql = "SELECT * FROM todos WHERE id = ?";
+
+        $todo = DB::selectOne($sql, [$id]);
+
+        return view('todos.show', ['todo' => $todo]);
+    }
+
+    public function update (Request $request, $id) {
+
+        $request->validate([
+            'title' => 'required|min:3',
+        ]);
+
+        $sql = "UPDATE todos SET title = ?, updated_at = ? WHERE id = ?";
+
+        $title = $request->input('title');
+        $updated_at = now();
+
+        DB::update($sql, [$title, $updated_at, $id ]);
+
+        //dd($updated_todo);
+
+        // return view('todos.index', ['success' => '¡Tarea actualizada!']);
+        return redirect()->route('home')->with('success', '¡Tarea actualizada!');
+    }
+
+    public function destroy ($id) {
+        $sql = "DELETE FROM todos WHERE id = ?";
+
+        DB::delete($sql, [$id]);
+
+        return redirect()->route('home')->with('success', '¡Tarea eliminada!');
     }
 }
