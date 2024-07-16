@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Uuid;
 
 class CategoriesController extends Controller
 {
@@ -13,7 +16,11 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        //
+        $sql = "SELECT * FROM categories";
+
+        $categories = DB::select($sql);
+
+        return view('categories.index', ['categories' => $categories]);
     }
 
     /**
@@ -21,9 +28,9 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        //$sql = "INSERT INTO categories";
     }
 
     /**
@@ -34,7 +41,22 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:categories|max:255',
+            'color' => 'required|max:7'
+        ]);
+
+        $sql = "INSERT INTO categories ( id, name, color ) VALUES (?, ?, ?)";
+
+        $uuid = Uuid::uuid4()->toString();
+        $name = $request->input('name');
+        $color = $request->input('color');
+
+        DB::insert($sql, [$uuid, $name, $color]);
+
+        return redirect()->route('categories.indes')->with('success', '¡Categoría creada!');
+
+
     }
 
     /**
@@ -45,7 +67,11 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        //
+        $sql = "SELECT * FROM categories WHERE id = ?";
+
+        $category = DB::selectOne($sql, [$id]);
+
+        return view('categories.show', ['category' => $category]);
     }
 
     /**
@@ -68,7 +94,19 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:categories|max:255',
+            'color' => 'required|max:7'
+        ]);
+
+        $sql = "UPDATE categories ( name, color ) VALUES (?, ?) WHERE id = ?";
+
+        $name = $request->input('name');
+        $color = $request->input('color');
+
+        DB::insert($sql, [$name, $color, $id]);
+
+        return redirect()->route('categories.indes')->with('success', '¡Categoría actualizada!');
     }
 
     /**
@@ -79,6 +117,11 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $sql = "DELETE FROM categories WHERE id = ?";
+
+        DB::delete($sql, [$id]);
+
+        return redirect()->route('categories.indes')->with('success', '¡Categoría borrada!');
+
     }
 }
