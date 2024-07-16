@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\TodosController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,3 +35,7 @@ Route::get('/tareas-mostrar/{id}', [TodosController::class, 'show'])->name('todo
 Route::patch('/tareas-editar/{id}', [TodosController::class, 'update'])->name('todos-patch');
 
 Route::delete('/tareas-borrar/{id}', [TodosController::class, 'destroy'])->name('todos-destroy');
+
+// Agregar todas las rutas de un controller
+
+Route::resource('categories', CategoriesController::class);
