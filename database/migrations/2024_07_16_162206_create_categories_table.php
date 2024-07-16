@@ -18,7 +18,14 @@ class CreateCategoriesTable extends Migration
         //     $table->id();
         //     $table->timestamps();
         // });
-        $sql = "";
+        $sql = "
+            CREATE TABLE categories (
+                id CHAR(36) PRIMARY KEY,
+                name VARCHAR(255) NOT NULL UNIQUE,
+                color VARCHAR(7) NOT NULL UNIQUE,
+                created_at DATETIME,
+                updated_at DATETIME
+            )";
 
         DB::statement($sql);
     }
