@@ -67,13 +67,13 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($category)
     {
         $sql = "SELECT * FROM categories WHERE id = ?";
 
-        $category = DB::selectOne($sql, [$id]);
+        $category_show = DB::selectOne($sql, [$category]);
 
-        return view('categories.show', ['category' => $category]);
+        return view('categories.show', ['category' => $category_show]);
     }
 
     /**
@@ -94,7 +94,7 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $category)
     {
         $request->validate([
             'name' => 'required|unique:categories|max:255',
@@ -107,7 +107,7 @@ class CategoriesController extends Controller
         $color = $request->input('color');
         $updated_at = now();
 
-        DB::insert($sql, [$name, $color, $updated_at, $id]);
+        DB::insert($sql, [$name, $color, $updated_at, $category]);
 
         return redirect()->route('categories.index')->with('success', '¡Categoría actualizada!');
     }
@@ -118,11 +118,11 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($category)
     {
         $sql = "DELETE FROM categories WHERE id = ?";
 
-        DB::delete($sql, [$id]);
+        DB::delete($sql, [$category]);
 
         return redirect()->route('categories.index')->with('success', '¡Categoría borrada!');
 
